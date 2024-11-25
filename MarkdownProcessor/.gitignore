@@ -9,10 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-<<<<<<< Updated upstream
-=======
 *.idea
->>>>>>> Stashed changes
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -352,9 +349,3 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-<<<<<<< Updated upstream
-
-# Ignore configuration file with API keys
-appsettings.Secrets.json
-=======
->>>>>>> Stashed changes
