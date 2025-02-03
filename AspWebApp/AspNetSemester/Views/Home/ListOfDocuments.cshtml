@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Документы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        button {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>List of documents that you have access to:</h1>
+<ul id="document-list"></ul>
+
+<script>
+    async function fetchDocuments() {
+        try {
+            const response = await fetch("/api/documents/list", { method: "GET", credentials: "include" });
+            if (!response.ok) {
+                if (response.status === 401) {
+                    document.getElementById("document-list").innerHTML = "<li>User unauthorized</li>";
+                    return;
+                }
+                throw new Error("Error loading documents");
+            }
+
+            const documents = await response.json();
+            const listElement = document.getElementById("document-list");
+            listElement.innerHTML = "";
+
+            if (documents.length === 0) {
+                listElement.innerHTML = "<li>Нет доступных документов</li>";
+            } else {
+                documents.forEach(doc => {
+                    const li = document.createElement("li");
+                    const a = document.createElement("a");
+                    a.href = `/document?documentId=${doc.id}`;
+                    a.textContent = doc.fileName;
+                    a.target = "_blank";
+
+                    li.appendChild(a);
+
+                    if (!doc.isReadOnly) {
+                        const input = document.createElement("input");
+                        input.type = "text";
+                        input.placeholder = "Enter username";
+                        input.id = `input-${doc.id}`;
+                        li.appendChild(input);
+
+                        const grantButton = document.createElement("button");
+                        grantButton.textContent = "Grant edit access";
+                        grantButton.onclick = () => grantAccess(doc.id, false);
+                        li.appendChild(grantButton);
+
+                        const readOnlyButton = document.createElement("button");
+                        readOnlyButton.textContent = "Grant read-only access";
+                        readOnlyButton.onclick = () => grantAccess(doc.id, true);
+                        li.appendChild(readOnlyButton);
+
+                        const revokeButton = document.createElement("button");
+                        revokeButton.textContent = "Remove access";
+                        revokeButton.onclick = () => revokeAccess(doc.id);
+                        li.appendChild(revokeButton);
+                    }
+
+                    listElement.appendChild(li);
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            document.getElementById("document-list").innerHTML = "<li>Ошибка загрузки документов</li>";
+        }
+    }
+
+    async function grantAccess(documentId, isReadOnly) {
+        const username = document.getElementById(`input-${documentId}`).value;
+        if (!username) {
+            alert("Enter username");
+            return;
+        }
+
+        const response = await fetch(`/api/documents/grant-access`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ documentId, username, isReadOnly })
+        });
+
+        if (response.ok) {
+            alert(isReadOnly ? "Granted read-only access" : "Granted edit access");
+        } else {
+            alert("Error giving access, perhaps user doesn't exist");
+        }
+    }
+
+    async function revokeAccess(documentId) {
+        const username = document.getElementById(`input-${documentId}`).value;
+        if (!username) {
+            alert("Введите имя пользователя");
+            return;
+        }
+
+        const response = await fetch(`/api/documents/revoke-access`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ documentId, username })
+        });
+
+        if (response.ok) {
+            alert("Доступ удален");
+        } else {
+            alert("Ошибка удаления доступа");
+        }
+    }
+
+    fetchDocuments();
+</script>
+
+</body>
+</html>

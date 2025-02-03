@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetSemester", "AspNetSemester\AspNetSemester.csproj", "{77285203-B8D7-43F8-B02E-E2BDD50C19B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownProccesor", "MarkdownProccesor\MarkdownProccesor.csproj", "{F00C8740-D8F3-4DF1-908D-43B47C05859A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77285203-B8D7-43F8-B02E-E2BDD50C19B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77285203-B8D7-43F8-B02E-E2BDD50C19B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77285203-B8D7-43F8-B02E-E2BDD50C19B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77285203-B8D7-43F8-B02E-E2BDD50C19B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F00C8740-D8F3-4DF1-908D-43B47C05859A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F00C8740-D8F3-4DF1-908D-43B47C05859A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F00C8740-D8F3-4DF1-908D-43B47C05859A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F00C8740-D8F3-4DF1-908D-43B47C05859A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
